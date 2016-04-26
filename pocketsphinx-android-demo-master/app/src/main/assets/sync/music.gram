@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar music;
+
+public <item> = play | pause | stop ;

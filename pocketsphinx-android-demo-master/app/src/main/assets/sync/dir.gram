@@ -1,0 +1,6 @@
+#JSGF V1.0;
+
+grammar directions;
+
+public <item> = <city> to <city> ;
+<city> = new york | phoenix | tempe | seattle | california | flagstaff | boston ;
