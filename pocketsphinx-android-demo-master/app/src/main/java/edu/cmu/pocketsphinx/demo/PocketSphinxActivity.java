@@ -64,6 +64,7 @@ public class PocketSphinxActivity extends Activity implements
     private static final String CLOSE_SEARCH = "close";
     private static final String DIR_SEARCH = "direction";
     private static final String MUSIC_SEARCH = "music";
+    private static final String MAPS_SEARCH = "maps";
     private static String prevCom = "";
     private static String curCom = "";
     private static int count = 0;
@@ -89,6 +90,7 @@ public class PocketSphinxActivity extends Activity implements
         captions.put(CLOSE_SEARCH, R.string.close_caption);
         captions.put(DIR_SEARCH, R.string.dir_caption);
         captions.put(MUSIC_SEARCH, R.string.music_caption);
+        captions.put(MAPS_SEARCH, R.string.music_caption);
 
         setContentView(R.layout.main);
         ((TextView) findViewById(R.id.caption_text))
@@ -117,7 +119,8 @@ public class PocketSphinxActivity extends Activity implements
                     ((TextView) findViewById(R.id.caption_text))
                             .setText("Failed to init recognizer " + result);
                 } else {
-                    switchSearch(KWS_SEARCH);
+                    openBT("connected","","");
+                    switchSearch(MENU_SEARCH);
                 }
             }
         }.execute();
@@ -168,15 +171,20 @@ public class PocketSphinxActivity extends Activity implements
             switchSearch(MUSIC_SEARCH);
             prevCom=new String(text);
         }
+        else if (text.equals(MAPS_SEARCH)) {
+            switchSearch(MAPS_SEARCH);
+            prevCom=new String(text);
+        }
         else
-            ((TextView
-                    ) findViewById(R.id.result_text)).setText(text);
+            ((TextView) findViewById(R.id.result_text)).setText(text);
         curCom = text;
     }
 
     /**
      * This callback is called when we stop the recognizer.
      */
+
+
 
     public void callFromSkype(String cmd, String text, String name){
         try {
@@ -194,6 +202,23 @@ public class PocketSphinxActivity extends Activity implements
         makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
+    public void openBT(String cmd, String text, String name){
+        try {
+            aHandler = new Handler();
+            android.util.Log.w(this.getClass().getSimpleName(), "Constructing URL" +
+                    " " + url + " message ");
+            JsonRPCClientViaThread names = new JsonRPCClientViaThread(new URL(url),
+                    aHandler, this, cmd, "[ \"" + name + "\" ]");
+            names.start();
+        } catch (Exception ex) {
+            android.util.Log.w(this.getClass().getSimpleName(), "Exception constructing URL" +
+                    " " + url + " message " + ex.getMessage());
+
+        }
+        makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+
     @Override
     public void onResult(Hypothesis hypothesis) {
         ((TextView) findViewById(R.id.result_text)).setText("");
@@ -206,7 +231,7 @@ public class PocketSphinxActivity extends Activity implements
                 if(text.equals("tom"))
                     name = "harishmalik108";
                 else
-                    name = "live:dhawal9035";
+                    name = "dhawal9035";
                 String cmd = "callFromSkype";
                 callFromSkype(cmd,text,name);
             }
@@ -219,23 +244,49 @@ public class PocketSphinxActivity extends Activity implements
                 }
                 else if(text.equals("bluetooth"))
                 {
+                    openBT("bluetoothon",text,"");
                     android.util.Log.w(this.getClass().getSimpleName(),"command operated is " + prevCom + " "+ text);
                 }
             }
-            if(text.equals("play") || text.equals("stop") || text.equals("pause") ) {
+            else if(text.equals("play") || text.equals("close") || text.equals("pause") ) {
                 android.util.Log.w(this.getClass().getSimpleName(),"command operated is " + prevCom + " "+ text);
+                if (text.contains("play")) {
+                    openBT("playMusic", text, "");
+                }
+                else if (text.contains("close")){
+                    openBT("closeMusic", text, "");
+                }
             }
-            else if((text.contains("to"))){
+            else if(text.contains("restaurant")){
+                openBT("getRestaurants", text, "");
+            }
+            else if(text.contains("status")){
+                openBT("getCarStatus ", text, "");
+            }
+            else if (text.contains("direction") || text.contains("hotel") || text.contains("gas") ) {
+                if(text.equals("direction")){
+                    android.util.Log.w( this.getClass().getSimpleName(),"command operated is " + prevCom + " "+ text);
+                }
+                else if(text.contains("hotel") || text.equals("hotels")) {
+                    openBT("getHotels", text, "");
+                    android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
+                    android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
+                }
+                else if(text.contains("gas")){
+                    openBT("getFuelStations", text, "");
+                    android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
+                    android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
+                }
+            } else if( !(text.equals("tom")) && !text.equals("bluetooth") && (text.contains("to"))) {
                 String[] str = text.split(" ");
                 String source = str[0];
                 String destination = str[2];
                 String sourceCity = text.substring(0, text.indexOf(" to ") + 1);
-                String destinationCity = text.substring(5 + text.indexOf(" of "), text.length());
+                openBT("openMapsAndDirections",text,destination);
                 android.util.Log.w(this.getClass().getSimpleName(), "source - " + source + "destination " + destination);
-                android.util.Log.w(this.getClass().getSimpleName(), "source - " + sourceCity + "destination " + destinationCity);
-            }
-            }
+                }
 
+            }
     }
 
     @Override
@@ -251,7 +302,7 @@ public class PocketSphinxActivity extends Activity implements
         System.out.println(count + "count" );
         if (count != 5){
             count= 0;
-            switchSearch(KWS_SEARCH);
+            switchSearch(MENU_SEARCH);
         }
 
         System.out.println("onEnd of Speech");
@@ -262,7 +313,7 @@ public class PocketSphinxActivity extends Activity implements
         TextView t = (TextView) findViewById(R.id.curCom);
         String searchName = (String) t.getText();
         android.util.Log.w(this.getClass().getSimpleName(),"start listening by button");
-        if (searchName.equals(KWS_SEARCH))
+        if (searchName.equals(MENU_SEARCH))
             recognizer.startListening(searchName);
         else
             recognizer.startListening(searchName, 20000);
@@ -325,6 +376,8 @@ public class PocketSphinxActivity extends Activity implements
         File musicGrammar = new File(assetsDir, "music.gram");
         recognizer.addGrammarSearch(MUSIC_SEARCH, musicGrammar);
 
+        File mapsGrammar = new File(assetsDir, "maps.gram");
+        recognizer.addGrammarSearch(MAPS_SEARCH, mapsGrammar);
         /*
         // Create language model search
         File languageModel = new File(assetsDir, "weather.dmp");
@@ -342,6 +395,6 @@ public class PocketSphinxActivity extends Activity implements
 
     @Override
     public void onTimeout() {
-        switchSearch(KWS_SEARCH);
+        switchSearch(MENU_SEARCH);
     }
 }

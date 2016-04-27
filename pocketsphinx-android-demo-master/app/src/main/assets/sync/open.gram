@@ -2,4 +2,4 @@
 
 grammar open;
 
-public <item> = bluetooth | music | maps | direction ;
+public <item> = bluetooth | music | maps | direction | car status ;
