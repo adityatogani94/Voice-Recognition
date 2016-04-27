@@ -59,6 +59,18 @@ public class CollectionSkeleton extends Object {
                 boolean executed = sLib.playMusic();
                 result.put("result",executed);
             }
+            else if(method.equals("closeMusic")){
+                boolean executed = sLib.closeMusic();
+                result.put("result",executed);
+            }
+            else if(method.equals("getHotels")){
+                boolean executed = sLib.getHotels();
+                result.put("result",executed);
+            }
+            else if(method.equals("connected")){
+                boolean executed = sLib.connected();
+                result.put("result",executed);
+            }
 
 
         }catch(Exception ex){

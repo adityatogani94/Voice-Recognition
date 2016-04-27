@@ -11,4 +11,7 @@ public interface SRSCollection {
     boolean getFuelStations() throws IOException;
     boolean getRestaurants() throws IOException;
     boolean playMusic() throws IOException;
+    boolean closeMusic() throws IOException;
+    boolean getHotels() throws IOException;
+    boolean connected() throws IOException;
 }

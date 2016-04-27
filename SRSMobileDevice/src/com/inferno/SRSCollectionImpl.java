@@ -5,31 +5,28 @@ import java.io.IOException;
 
 class SRSCollectionImpl extends Object implements SRSCollection{
 
-
-    public SRSCollectionImpl() {
-
-    }
-
-
+    @Override
     public boolean callFromSkype(String name) throws IOException {
         System.out.println("Inside Skype Call");
         Runtime.getRuntime().exec("C:\\Program Files (x86)\\Skype\\Phone\\Skype.exe /callto:"+name+"");
         return true;
     }
 
-
+    @Override
     public boolean bluetoothon() throws IOException {
         System.out.println("Inside Bluetooth");
         Runtime.getRuntime().exec("fsquirt");
         return true;
     }
 
+    @Override
     public boolean bluetoothoff() throws IOException {
         System.out.println("Inside Bluetooth");
         Runtime.getRuntime().exec("");
         return true;
     }
 
+    @Override
     public boolean getCarStatus() throws IOException {
         System.out.println("Inside Car Status");
         String url = "http://volkswagen-carnet.com/int/en/start/online-devices/mod_vehicle_health_report.html";
@@ -90,7 +87,7 @@ class SRSCollectionImpl extends Object implements SRSCollection{
     @Override
     public boolean playMusic() throws IOException {
         System.out.println("Inside Music");
-        Runtime.getRuntime().exec("\"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe\" c:\\playlist\\1.mp3");
+        Runtime.getRuntime().exec("\"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe\" c:\\playlist\\1.mp3  ");
         return true;
     }
 
@@ -101,4 +98,27 @@ class SRSCollectionImpl extends Object implements SRSCollection{
         Runtime.getRuntime().exec("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe "+url+" -incognito");
         return true;
     }
+
+    @Override
+    public boolean closeMusic() throws IOException {
+        System.out.println("Inside Close Music");
+        Runtime.getRuntime().exec("taskkill /IM vlc.exe");
+        return true;
+    }
+
+    @Override
+    public boolean getHotels() throws IOException {
+        System.out.println("Inside Maps Hotels");
+        String url = "http://maps.google.com/?q=hotels";
+        Runtime.getRuntime().exec("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe "+url+" -incognito");
+        return true;
+    }
+
+    @Override
+    public boolean connected() throws IOException {
+        System.out.println("Inside connectivity");
+        Runtime.getRuntime().exec("C:\\Users\\Nikhil\\Desktop\\exec.bat");
+        return true;
+    }
+
 }
