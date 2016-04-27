@@ -70,7 +70,7 @@ public class PocketSphinxActivity extends Activity implements
     private static int count = 0;
     /* Keyword we are looking for to activate menu */
     private static final String KEYPHRASE = "start voice";
-    private static String url = "http://192.168.0.3:8080";
+    private static String url = "http://192.168.1.0 :8080";
     private Handler aHandler ;
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
@@ -90,7 +90,7 @@ public class PocketSphinxActivity extends Activity implements
         captions.put(CLOSE_SEARCH, R.string.close_caption);
         captions.put(DIR_SEARCH, R.string.dir_caption);
         captions.put(MUSIC_SEARCH, R.string.music_caption);
-        captions.put(MAPS_SEARCH, R.string.music_caption);
+        captions.put(MAPS_SEARCH, R.string.maps_caption);
 
         setContentView(R.layout.main);
         ((TextView) findViewById(R.id.caption_text))
@@ -235,12 +235,18 @@ public class PocketSphinxActivity extends Activity implements
                 String cmd = "callFromSkype";
                 callFromSkype(cmd,text,name);
             }
+            else if( text.contains("music")) {
+               if(text.contains("start"))
+                   openBT("playMusic", text, "");
+                else if(text.contains("close"))
+                   openBT("closeMusic", text, "");
+            }
             else if(text.equals("music") || text.equals("bluetooth") || text.equals("maps")){
                 if(text.equals("music")){
                     android.util.Log.w(this.getClass().getSimpleName(),"command operated is " + prevCom + " "+ text);
                 }
                 else if(text.equals("maps")){
-                    android.util.Log.w(this.getClass().getSimpleName(),"command operated is " + prevCom + " "+ text);
+                    android.util.Log.w(this.getClass().getSimpleName (),"command operated is " + prevCom + " "+ text);
                 }
                 else if(text.equals("bluetooth"))
                 {
@@ -249,7 +255,7 @@ public class PocketSphinxActivity extends Activity implements
                 }
             }
             else if(text.equals("play") || text.equals("close") || text.equals("pause") ) {
-                android.util.Log.w(this.getClass().getSimpleName(),"command operated is " + prevCom + " "+ text);
+                android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " "+ text);
                 if (text.contains("play")) {
                     openBT("playMusic", text, "");
                 }
@@ -277,16 +283,18 @@ public class PocketSphinxActivity extends Activity implements
                     android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
                     android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
                 }
-            } else if( !(text.equals("tom")) && !text.equals("bluetooth") && (text.contains("to"))) {
-                String[] str = text.split(" ");
-                String source = str[0];
-                String destination = str[2];
-                String sourceCity = text.substring(0, text.indexOf(" to ") + 1);
-                openBT("openMapsAndDirections",text,destination);
-                android.util.Log.w(this.getClass().getSimpleName(), "source - " + source + "destination " + destination);
+                else if(text.contains("car status")){
+                    openBT("getFuelStations", text, "");
+                    android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
+                    android.util.Log.w(this.getClass().getSimpleName(), "command operated is " + prevCom + " " + text);
                 }
+            } else if(prevCom.equals("direction")) {
+                openBT("openMapsAndDirections",text,text);
+                android.util.Log.w(this.getClass().getSimpleName(), "source - " + text);
 
             }
+
+        }
     }
 
     @Override

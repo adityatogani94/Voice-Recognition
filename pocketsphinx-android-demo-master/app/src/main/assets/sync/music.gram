@@ -2,4 +2,4 @@
 
 grammar music;
 
-public <item> = play | pause | close ;
+public <item> = play | close ;

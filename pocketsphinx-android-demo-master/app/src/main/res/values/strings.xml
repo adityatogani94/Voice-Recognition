@@ -4,12 +4,13 @@
     <string name="app_name">PocketSphinx Demo</string>
     
     <string name="kws_caption">To start demonstration say \"oh mighty computer\".</string>
-    <string name="menu_caption">Say \"call\", \"turn\", \"open\", \"play\", "pause" or \"open\" to choose the grammar, language model or phonetic decoder example.</string>
+    <string name="menu_caption">Say \"open\", \"close\" or \"dial\" to choose the grammar, language model or phonetic decoder example.</string>
     <string name="turn_caption">Say bluetooth.</string>
     <string name="switch_caption">To try recognition of a weather forecast like \"sunny spells on Wednesday\".</string>
     <string name="call_caption">Say Tom, Kevin or John to call any one of them.</string>
-    <string name="close_caption">Say some program bluetooth, music or maps to close.</string>
-    <string name="open_caption">Say some program bluetooth, music or maps to open.</string>
-    <string name="dir_caption">Name a city source to city destination in the form of \"source\" to \"destination\"</string>
-    <string name="music_caption">Play pause or stop</string>
+    <string name="close_caption">Say some program name - bluetooth, music or maps to close.</string>
+    <string name="open_caption">Say some program name - bluetooth, music, car status or maps to open.</string>
+    <string name="dir_caption">Name a city destination </string>
+    <string name="maps_caption">What do you want to search - Direction(destination city), restaurants, hotels, gas stations</string>
+    <string name="music_caption">Play or stop</string>
 </resources>
